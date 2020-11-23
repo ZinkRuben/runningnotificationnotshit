@@ -27,7 +27,7 @@ class timer : AppCompatActivity() {
         sprintGlobal = data2
         hanypercGlobal = data3
 
-        fulltimer(warmup = warmupGlobal.toInt(), sprint = sprintGlobal.toInt(),howManySprint = hanypercGlobal.toInt())
+        fulltimer(warmup = (warmupGlobal.toInt()*60), sprint = sprintGlobal.toInt(),howManySprint = hanypercGlobal.toInt())
 
     }
     var x = 0
@@ -38,9 +38,13 @@ class timer : AppCompatActivity() {
         if (x<cdFrom) {
             Timer("c", false).schedule(1000) {
                 var value = cdFrom - x
+                var timeMin = value / 60
+                var timeSec = value % 60
+
+
                 x += 1
                 runOnUiThread(java.lang.Runnable {
-                    countdownTextView.text = value.toString()
+                    countdownTextView.text = "$timeMin:$timeSec"
                 })
 
                 timerke()
@@ -49,7 +53,7 @@ class timer : AppCompatActivity() {
         else{
             tasksCompleted += 1
             x = 0
-            fulltimer(warmup = warmupGlobal.toInt(), sprint = sprintGlobal.toInt(),howManySprint = hanypercGlobal.toInt())
+            fulltimer(warmup = (warmupGlobal.toInt()*60), sprint = sprintGlobal.toInt(),howManySprint = hanypercGlobal.toInt())
         }
     }
 

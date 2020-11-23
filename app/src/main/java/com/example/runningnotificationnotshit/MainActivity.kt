@@ -15,19 +15,21 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
     var startButton = findViewById<Button>(R.id.startButton)
+
         startButton.setOnClickListener {
 
 
-            val bemelegitesxd = bemelegitesTime.text.toString()
+            val bemelegites = (bemelegitesTime).text.toString()
             var sprint = sprintTime.text.toString()
             var hanyperc = hanyPercTime.text.toString()
 
-            val intent = Intent(startButton.context, timer::class.java)
-            intent.putExtra("bemelegitesName", bemelegitesxd)
-            intent.putExtra("sprintName", sprint)
-            intent.putExtra("hanypercName", hanyperc)
-            startButton.context.startActivity(intent)
+            if (bemelegites.isNotEmpty() && sprint.isNotEmpty() && hanyperc.isNotEmpty()) {
+                val intent = Intent(startButton.context, timer::class.java)
+                intent.putExtra("bemelegitesName", bemelegites)
+                intent.putExtra("sprintName", sprint)
+                intent.putExtra("hanypercName", hanyperc)
+                startButton.context.startActivity(intent)
+            }
         }
-
     }
 }

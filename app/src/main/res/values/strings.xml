@@ -1,3 +1,6 @@
 <resources>
     <string name="app_name">running notification not shit</string>
+    <string name="channel_id">2</string>
+    <string name="channel_description">TestDescription</string>
+    <string name="channel_name">TestChannel</string>
 </resources>

@@ -20,9 +20,9 @@ import kotlin.reflect.typeOf
 var warmupGlobal = ""
 var sprintGlobal = ""
 var hanypercGlobal = ""
+//csinalj ezekkel a nevekkel valamit pls
 
 class timer : AppCompatActivity() {
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
@@ -50,81 +50,73 @@ class timer : AppCompatActivity() {
                 runOnUiThread(java.lang.Runnable {
                     countdownTextView.text = value.toString()
                 })
-
                 timerke()
             }
-        }
-        else{
+        } else {
             tasksCompleted += 1
             x = 0
             fulltimer(warmup = warmupGlobal.toInt(), sprint = sprintGlobal.toInt(),howManySprint = hanypercGlobal.toInt())
         }
     }
 
-
-    fun fulltimer(warmup: Int, sprint: Int, howManySprint: Int ) {
-
-    if (tasksCompleted == 0) {
-    //warmup
-        cdFrom = warmup
-        timerke()
-    }
-
-            //sprinting parts
-            for(y in 0..(howManySprint-1)) {
-                //sprint
-                if (tasksCompleted == 1 + 2*y) {
-
-                    cdFrom = sprint
-                    timerke()
-                    sendNotification()
-                }
-                if (tasksCompleted == 2 + 2*y) {
-
-                    //jogging
-                    sendNotification()
-                    cdFrom = (10 - sprint)
-                    timerke()
-                }
-            }
-        //cooldown
-        if (tasksCompleted == (2*howManySprint+1)) {
+    fun fulltimer (warmup: Int, sprint: Int, howManySprint: Int ) {
+        if (tasksCompleted == 0) {
+            sendNotification("warmup",false)
             cdFrom = warmup
             timerke()
+            //warmup
         }
-
-
-}
+        for (y in 0 until (howManySprint - 1)) {
+            if (tasksCompleted == 1 + 2*y) {
+                sendNotification("sprint",false)
+                cdFrom = sprint
+                timerke()
+                //sprint
+            }
+            if (tasksCompleted == 2 + 2*y) {
+                sendNotification("jog",false)
+                cdFrom = (10 - sprint)
+                timerke()
+                //jogging
+            }
+        }
+        if (tasksCompleted == (2*howManySprint+1)) {
+            sendNotification("cooldown",true)
+            cdFrom = warmup
+            timerke()
+            //cooldown
+        }
+    }
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val name = getString(R.string.channel_name)
-            val descriptionText = getString(R.string.channel_description)
+            val name = "ActivityChannel"
+            val descriptionText = "Activity channel, displays what you should be doing."
             val importance = NotificationManager.IMPORTANCE_DEFAULT
-            val channel = NotificationChannel(R.string.channel_id.toString(), name, importance).apply {
-                description = descriptionText
-            }
+            val channel = NotificationChannel(R.string.ac_id.toString(), name, importance).apply {description = descriptionText}
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
         }
     }
-    private fun sendNotification(){
-        val intent = Intent(this,timer::class.java).apply {
+
+    private fun sendNotification(displayedText: String, isover: Boolean){
+        /*val intent = Intent(this,timer::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
         }
-        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)
-        val builder = NotificationCompat.Builder(this, R.string.channel_id.toString())
+        val pendingIntent: PendingIntent = PendingIntent.getActivity(this, 0, intent, 0)*/
+        val builder = NotificationCompat.Builder(this, R.string.ac_id.toString())
             .setSmallIcon(R.drawable.ic_launcher_foreground)
-            .setContentTitle("TestTitle")
-            .setContentText("TestText")
+            .setContentTitle("Athleanx timed running")
+            .setContentText(displayedText)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            .setContentIntent(pendingIntent)
-            .setAutoCancel(true)
+            if (!isover) {
+                builder.setOngoing(true)
+            } else {
+                builder.setOngoing(false)
+            }
         with(NotificationManagerCompat.from(this)) {
             notify(2, builder.build())
         }
-
-
     }
 }

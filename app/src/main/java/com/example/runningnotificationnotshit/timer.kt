@@ -27,6 +27,8 @@ class timer : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
 
+        createNotificationChannel()
+
         //get data from mainActivity
         var data1 = intent.getStringExtra("bemelegitesName").toString()
         var data2 = intent.getStringExtra("sprintName").toString()
@@ -66,6 +68,10 @@ class timer : AppCompatActivity() {
 
     fun fulltimer (warmup: Int, sprint: Int, howManySprint: Int ) {
         if (tasksCompleted == 0) {
+            runOnUiThread(java.lang.Runnable {
+                ActivityTextView.setText("warmup")
+            })
+
             sendNotification("warmup",false)
             cdFrom = warmup
             timerke()
@@ -73,12 +79,21 @@ class timer : AppCompatActivity() {
         }
         for (y in 0 until (howManySprint - 1)) {
             if (tasksCompleted == 1 + 2*y) {
+                runOnUiThread(java.lang.Runnable {
+                    ActivityTextView.setText("sprint")
+                })
+
+
                 sendNotification("sprint",false)
                 cdFrom = sprint
                 timerke()
                 //sprint
             }
             if (tasksCompleted == 2 + 2*y) {
+
+                runOnUiThread(java.lang.Runnable {
+                    ActivityTextView.setText("jog")
+                })
                 sendNotification("jog",false)
                 cdFrom = (60 - sprint)
                 timerke()
@@ -86,9 +101,20 @@ class timer : AppCompatActivity() {
             }
         }
         if (tasksCompleted == (2*howManySprint+1)) {
+            runOnUiThread(java.lang.Runnable {
+                ActivityTextView.setText("cooldown")
+            })
             sendNotification("cooldown",true)
             cdFrom = warmup
             timerke()
+            //cooldown
+        }
+        if (tasksCompleted == (2*howManySprint+2)) {
+            runOnUiThread(java.lang.Runnable {
+                ActivityTextView.setText("workout ended")
+            })
+            sendNotification("end",true)
+            startActivity(Intent(this, EndScreenke::class.java))
             //cooldown
         }
     }

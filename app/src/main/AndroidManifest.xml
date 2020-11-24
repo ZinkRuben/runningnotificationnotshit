@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.RunningNotificationNotShit">
-        <activity android:name=".timer"></activity>
+        <activity android:name=".EndScreenke"></activity>
+        <activity android:name=".timer" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

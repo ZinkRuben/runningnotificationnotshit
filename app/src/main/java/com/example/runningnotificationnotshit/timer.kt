@@ -27,7 +27,7 @@ class timer : AppCompatActivity() {
         sprintGlobal = data2
         hanypercGlobal = data3
 
-        fulltimer(warmup = warmupGlobal.toInt(), sprint = sprintGlobal.toInt(),howManySprint = hanypercGlobal.toInt())
+        fulltimer(warmup = warmupGlobal.toInt(), sprint = sprintGlobal.toInt(),hanyperc = hanypercGlobal.toInt())
 
     }
     var x = 0
@@ -49,12 +49,12 @@ class timer : AppCompatActivity() {
         else{
             tasksCompleted += 1
             x = 0
-            fulltimer(warmup = warmupGlobal.toInt(), sprint = sprintGlobal.toInt(),howManySprint = hanypercGlobal.toInt())
+            fulltimer(warmup = warmupGlobal.toInt(), sprint = sprintGlobal.toInt(),hanyperc = hanypercGlobal.toInt())
         }
     }
 
 
-    fun fulltimer(warmup: Int, sprint: Int, howManySprint: Int ) {
+    fun fulltimer(warmup: Int, sprint: Int, hanyperc: Int ) {
 
     if (tasksCompleted == 0) {
     //warmup
@@ -63,7 +63,7 @@ class timer : AppCompatActivity() {
     }
 
             //sprinting parts
-            for(y in 0..(howManySprint-1)) {
+            for(y in 0..(hanyperc-1)) {
                 //sprint
                 if (tasksCompleted == 1 + 2*y) {
 
@@ -79,13 +79,12 @@ class timer : AppCompatActivity() {
                 }
             }
         //cooldown
-        if (tasksCompleted == (2*howManySprint+1)) {
+        if (tasksCompleted == (2*hanyperc+1)) {
             cdFrom = warmup
             timerke()
         }
-
-
+        if (tasksCompleted == (2*hanyperc+2)) {
+        }
+        }
 }
-
-
     }

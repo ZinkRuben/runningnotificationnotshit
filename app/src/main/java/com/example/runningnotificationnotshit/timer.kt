@@ -35,8 +35,8 @@ class timer : AppCompatActivity() {
         sprintGlobal = data2
         hanypercGlobal = data3
 
-        fulltimer(warmup = warmupGlobal.toInt(), sprint = sprintGlobal.toInt(),howManySprint = hanypercGlobal.toInt())
-        createNotificationChannel()
+        fulltimer(warmup = (warmupGlobal.toInt()*60), sprint = sprintGlobal.toInt(),howManySprint = hanypercGlobal.toInt())
+
     }
     var x = 0
     var cdFrom = 12
@@ -46,10 +46,15 @@ class timer : AppCompatActivity() {
         if (x<cdFrom) {
             Timer("c", false).schedule(1000) {
                 var value = cdFrom - x
+                var timeMin = value / 60
+                var timeSec = value % 60
+
+
                 x += 1
                 runOnUiThread(java.lang.Runnable {
-                    countdownTextView.text = value.toString()
+                    countdownTextView.text = "$timeMin:$timeSec"
                 })
+
                 timerke()
             }
         } else {
@@ -75,7 +80,7 @@ class timer : AppCompatActivity() {
             }
             if (tasksCompleted == 2 + 2*y) {
                 sendNotification("jog",false)
-                cdFrom = (10 - sprint)
+                cdFrom = (60 - sprint)
                 timerke()
                 //jogging
             }
